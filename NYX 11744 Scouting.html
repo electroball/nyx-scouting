@@ -1,0 +1,823 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>NYX 11744 Scouting</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: night-band header with tabs; one narrow working column for the scout form (phone-first), wide tables for Matches and Teams. */
+:root {
+  --bg: #eceef6;
+  --surface: #ffffff;
+  --sunk: #e1e4f0;
+  --ink: #15163a;
+  --muted: #595d82;
+  --line: #d2d6e6;
+  --night: #121436;
+  --on-night: #e8e9fb;
+  --on-night-muted: #9ea2cf;
+  --moon: #5a4bd8;
+  --moon-ink: #ffffff;
+  --moon-soft: #e4e0ff;
+  --fuel: #b88a00;
+  --fuel-bg: #fff3c4;
+  --red: #c9303a;
+  --red-soft: #fde2e4;
+  --blue: #2559c7;
+  --blue-soft: #dde7fd;
+  --good: #1c7f53;
+  --warn: #a35f00;
+  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0c1d; --surface: #14162e; --sunk: #0f1126; --ink: #e6e7f7; --muted: #9a9dc4; --line: #282b4c;
+    --night: #06071a; --on-night: #e8e9fb; --on-night-muted: #8f93c4;
+    --moon: #a395ff; --moon-ink: #0b0c1d; --moon-soft: #262250;
+    --fuel: #ffd23a; --fuel-bg: #2e2810; --red: #ff6f74; --red-soft: #3a1820; --blue: #74a0ff; --blue-soft: #16244a;
+    --good: #50cc93; --warn: #ffb44d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0c1d; --surface: #14162e; --sunk: #0f1126; --ink: #e6e7f7; --muted: #9a9dc4; --line: #282b4c;
+  --night: #06071a; --on-night: #e8e9fb; --on-night-muted: #8f93c4;
+  --moon: #a395ff; --moon-ink: #0b0c1d; --moon-soft: #262250;
+  --fuel: #ffd23a; --fuel-bg: #2e2810; --red: #ff6f74; --red-soft: #3a1820; --blue: #74a0ff; --blue-soft: #16244a;
+  --good: #50cc93; --warn: #ffb44d; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--night); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--moon); outline-offset: 2px; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Header */
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--night); color: var(--on-night); }
+.hdr { max-width: 1120px; margin: 0 auto; padding-block: 10px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.mark { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.mark svg { width: 30px; height: 30px; flex: none; }
+.mark b { font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: .04em; line-height: 1; }
+.mark span { font-family: var(--font-mono); font-size: 13px; color: var(--on-night-muted); }
+.sync { font-family: var(--font-mono); font-size: 12px; color: var(--on-night-muted); display: flex; align-items: center; gap: 6px; }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--on-night-muted); display: inline-block; }
+.sync.ok i { background: var(--good); } .sync.wait i { background: var(--warn); }
+nav { width: 100%; display: flex; gap: 4px; }
+nav a { flex: 1; text-align: center; padding: 10px 8px 12px; color: var(--on-night-muted); text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 3px solid transparent; }
+nav a[aria-current="page"] { color: var(--on-night); border-bottom-color: var(--moon); }
+@media (min-width: 720px) { nav { width: auto; } nav a { flex: none; padding-inline: 16px; } }
+
+main { max-width: 1120px; margin: 0 auto; padding-block: 18px 64px; }
+.view { display: grid; gap: 16px; }
+.narrow { max-width: 640px; margin: 0 auto; width: 100%; }
+
+/* Phase sections */
+.phase { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 14px; }
+.phase h2 { margin: 0; display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: .03em; text-transform: uppercase; text-wrap: balance; }
+.phase h2 small { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--muted); letter-spacing: 0; text-transform: none; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+label.f { display: grid; gap: 4px; font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .02em; }
+input[type=text], input[type=number], select, textarea { width: 100%; background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 17px; color: var(--ink); font-weight: 400; }
+input[type=number] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+textarea { min-height: 84px; resize: vertical; }
+
+/* Alliance station picker */
+.stations { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.stations label { position: relative; }
+.stations input { position: absolute; opacity: 0; inset: 0; }
+.stations span { display: block; text-align: center; padding: 10px 0; border-radius: 8px; font-family: var(--font-mono); font-weight: 700; font-size: 15px; border: 2px solid transparent; cursor: pointer; }
+.stations .r span { background: var(--red-soft); color: var(--red); }
+.stations .b span { background: var(--blue-soft); color: var(--blue); }
+.stations input:checked + span { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+.stations input:focus-visible + span { outline: 3px solid var(--moon); outline-offset: 2px; }
+
+/* Counters */
+.counter { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 12px; padding: 10px 12px; border-radius: 8px; background: var(--sunk); }
+.counter.fuel { background: var(--fuel-bg); }
+.counter .cl { font-weight: 700; }
+.counter .cl small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+.counter output { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 1; min-width: 2.2ch; text-align: right; font-variant-numeric: tabular-nums; }
+.counter.fuel output { color: var(--fuel); }
+.btns { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.4fr 1.4fr 1.4fr; gap: 6px; }
+.btns button { padding: 12px 0; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font-family: var(--font-mono); font-weight: 700; font-size: 16px; cursor: pointer; touch-action: manipulation; }
+.btns button:active { transform: translateY(1px); background: var(--moon-soft); }
+.btns button.minus { color: var(--muted); }
+
+/* Toggles and segments */
+.toggles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.tog { position: relative; }
+.tog input { position: absolute; opacity: 0; }
+.tog span { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; font-size: 15px; }
+.tog span::before { content: ""; width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--muted); flex: none; }
+.tog input:checked + span { border-color: var(--moon); background: var(--moon-soft); }
+.tog input:checked + span::before { background: var(--moon); border-color: var(--moon); box-shadow: inset 0 0 0 3px var(--moon-soft); }
+.tog input:focus-visible + span { outline: 3px solid var(--moon); outline-offset: 2px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg label { position: relative; flex: 1 1 auto; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: block; text-align: center; padding: 11px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; font-size: 15px; white-space: nowrap; }
+.seg span em { font-style: normal; font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.seg input:checked + span { background: var(--moon); border-color: var(--moon); color: var(--moon-ink); }
+.seg input:checked + span em { color: inherit; }
+.seg input:focus-visible + span { outline: 3px solid var(--moon); outline-offset: 2px; }
+.seg.cards input:checked + span.y { background: #e8b500; border-color: #e8b500; color: #1a1400; }
+.seg.cards input:checked + span.rd { background: var(--red); border-color: var(--red); color: #fff; }
+.sub { font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: -6px; }
+
+/* Submit bar */
+.submitbar { position: sticky; bottom: 0; background: var(--bg); padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; border-top: 1px solid var(--line); }
+.est { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.est b { font-family: var(--font-display); font-size: 30px; color: var(--ink); font-weight: 800; margin-right: 4px; }
+.primary { background: var(--moon); color: var(--moon-ink); border: 0; border-radius: 10px; padding: 14px 22px; font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: .05em; text-transform: uppercase; cursor: pointer; }
+.primary:disabled { opacity: .45; cursor: not-allowed; }
+.ghost { background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: 700; font-size: 14px; color: var(--ink); }
+.ghost.danger { color: var(--red); border-color: var(--red); }
+.notice { padding: 10px 12px; border-radius: 8px; background: var(--moon-soft); font-size: 14px; }
+.notice.bad { background: var(--red-soft); color: var(--red); }
+.toast { position: fixed; left: 50%; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--night); color: var(--on-night); padding: 10px 16px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 20; box-shadow: 0 6px 24px rgba(0,0,0,.25); max-width: calc(100vw - 32px); }
+
+/* Tables */
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar input { max-width: 240px; }
+.toolbar .sp { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 9px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { text-align: left; }
+td.l, th.l { text-align: left; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--sunk); position: sticky; top: 0; }
+th button { all: unset; cursor: pointer; }
+th button[aria-sort] { color: var(--ink); }
+td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+td.txt { font-family: var(--font-body); white-space: normal; min-width: 180px; max-width: 360px; text-align: left; color: var(--muted); }
+tr.ours td:first-child { box-shadow: inset 3px 0 0 var(--moon); }
+tr.ours td { background: color-mix(in srgb, var(--moon-soft) 55%, transparent); }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover td { background: var(--sunk); }
+.teamno { font-family: var(--font-display); font-weight: 800; font-size: 19px; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
+.pill.r { background: var(--red-soft); color: var(--red); } .pill.b { background: var(--blue-soft); color: var(--blue); }
+.pill.lv { background: var(--moon-soft); color: var(--moon); } .pill.no { background: var(--sunk); color: var(--muted); }
+.pill.w { background: var(--red-soft); color: var(--red); }
+.pend { color: var(--warn); font-size: 12px; font-family: var(--font-mono); }
+.empty { padding: 36px 16px; text-align: center; color: var(--muted); display: grid; gap: 6px; justify-items: center; }
+.empty strong { color: var(--ink); font-family: var(--font-display); font-size: 22px; letter-spacing: .03em; text-transform: uppercase; }
+
+/* Team detail */
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 16px; }
+.detail h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.detail h3 small { font-family: var(--font-body); font-size: 14px; font-weight: 400; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.stat { padding: 10px 12px; border-radius: 8px; background: var(--sunk); }
+.stat div { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.stat b { font-family: var(--font-display); font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; min-width: 320px; }
+.notes { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.notes li { padding: 8px 12px; border-left: 3px solid var(--line); font-size: 15px; }
+.notes li span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-right: 8px; }
+.foot { font-size: 13px; color: var(--muted); max-width: 70ch; }
+.scorein { width: 78px; padding: 5px 8px; font-size: 14px; text-align: right; }
+.confirm { display: inline-flex; gap: 6px; align-items: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+</head>
+<body>
+<header>
+  <div class="hdr gutter">
+    <div class="mark">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 4.2A12.5 12.5 0 1 0 27.8 22 10 10 0 1 1 20.5 4.2Z" fill="var(--moon)"/><circle cx="25" cy="8" r="1.4" fill="var(--on-night)"/><circle cx="28.5" cy="13.5" r="0.9" fill="var(--on-night-muted)"/></svg>
+      <div><b>NYX</b> <span>FRC 11744 · REBUILT scouting</span></div>
+    </div>
+    <div id="sync" class="sync"><i></i><span>Connecting…</span></div>
+    <nav aria-label="Sections">
+      <a href="#scout" data-v="scout">Scout</a>
+      <a href="#matches" data-v="matches">Matches</a>
+      <a href="#teams" data-v="teams">Teams</a>
+    </nav>
+  </div>
+</header>
+
+<main class="gutter">
+
+<!-- SCOUT -->
+<section id="v-scout" class="view narrow">
+  <div id="roNote" class="notice bad" hidden>You can view data here but can't submit. Ask the page owner to share it with you as a Contributor.</div>
+
+  <div class="phase">
+    <h2>Pre-match <small>who and where</small></h2>
+    <div class="row">
+      <label class="f">Scout name<input id="scoutName" type="text" autocomplete="nickname" placeholder="Your name"></label>
+      <label class="f">Event<input id="eventName" type="text" placeholder="e.g. 2026 Chezy Champs"></label>
+    </div>
+    <div class="row">
+      <label class="f">Match type
+        <select id="matchType"><option value="qm">Qualification</option><option value="sf">Playoff</option><option value="f">Final</option><option value="pr">Practice</option></select>
+      </label>
+      <label class="f">Match #<input id="matchNo" type="number" inputmode="numeric" min="1" value="1"></label>
+      <label class="f">Team #<input id="teamNo" type="number" inputmode="numeric" min="1" placeholder="11744"></label>
+    </div>
+    <div>
+      <div class="sub" style="margin-bottom:6px">Driver station</div>
+      <div class="stations" role="radiogroup" aria-label="Driver station">
+        <label class="r"><input type="radio" name="station" value="R1" checked><span>R1</span></label>
+        <label class="r"><input type="radio" name="station" value="R2"><span>R2</span></label>
+        <label class="r"><input type="radio" name="station" value="R3"><span>R3</span></label>
+        <label class="b"><input type="radio" name="station" value="B1"><span>B1</span></label>
+        <label class="b"><input type="radio" name="station" value="B2"><span>B2</span></label>
+        <label class="b"><input type="radio" name="station" value="B3"><span>B3</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <h2>Auto <small>0:00 – 0:20</small></h2>
+    <div class="counter fuel" data-k="autoFuel"><div class="cl">Fuel scored<small>1 pt each, into an active hub</small></div><output>0</output>
+      <div class="btns"><button type="button" class="minus" data-d="-1">−1</button><button type="button" data-d="1">+1</button><button type="button" data-d="3">+3</button><button type="button" data-d="5">+5</button></div></div>
+    <div class="counter" data-k="autoMiss"><div class="cl">Fuel missed</div><output>0</output>
+      <div class="btns"><button type="button" class="minus" data-d="-1">−1</button><button type="button" data-d="1">+1</button><button type="button" data-d="3">+3</button><button type="button" data-d="5">+5</button></div></div>
+    <div class="toggles">
+      <label class="tog"><input type="checkbox" id="autoMoved"><span>Moved in auto</span></label>
+      <label class="tog"><input type="checkbox" id="autoDepot"><span>Took from depot</span></label>
+      <label class="tog"><input type="checkbox" id="autoClimb"><span>Climbed Level 1 (15)</span></label>
+    </div>
+  </div>
+
+  <div class="phase">
+    <h2>Teleop <small>0:20 – 2:40</small></h2>
+    <div class="counter fuel" data-k="teleFuel"><div class="cl">Fuel scored<small>Only counts while the hub is active</small></div><output>0</output>
+      <div class="btns"><button type="button" class="minus" data-d="-1">−1</button><button type="button" data-d="1">+1</button><button type="button" data-d="5">+5</button><button type="button" data-d="10">+10</button></div></div>
+    <div class="counter" data-k="teleMiss"><div class="cl">Fuel missed</div><output>0</output>
+      <div class="btns"><button type="button" class="minus" data-d="-1">−1</button><button type="button" data-d="1">+1</button><button type="button" data-d="5">+5</button><button type="button" data-d="10">+10</button></div></div>
+    <div class="toggles">
+      <label class="tog"><input type="checkbox" id="bump"><span>Crossed the bump</span></label>
+      <label class="tog"><input type="checkbox" id="trench"><span>Drove the trench</span></label>
+      <label class="tog"><input type="checkbox" id="feeder"><span>Collected fuel while hub inactive</span></label>
+      <label class="tog"><input type="checkbox" id="hpFeed"><span>Took fuel from outpost</span></label>
+    </div>
+    <div>
+      <div class="sub" style="margin-bottom:6px">Defense played</div>
+      <div class="seg" id="defense">
+        <label><input type="radio" name="defense" value="0" checked><span>None</span></label>
+        <label><input type="radio" name="defense" value="1"><span>Light</span></label>
+        <label><input type="radio" name="defense" value="2"><span>Solid</span></label>
+        <label><input type="radio" name="defense" value="3"><span>Shutdown</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <h2>Endgame <small>tower climb</small></h2>
+    <div class="seg" id="climb">
+      <label><input type="radio" name="climb" value="none" checked><span>No try</span></label>
+      <label><input type="radio" name="climb" value="fail"><span>Failed</span></label>
+      <label><input type="radio" name="climb" value="L1"><span>Level 1<em>10</em></span></label>
+      <label><input type="radio" name="climb" value="L2"><span>Level 2<em>20</em></span></label>
+      <label><input type="radio" name="climb" value="L3"><span>Level 3<em>30</em></span></label>
+    </div>
+  </div>
+
+  <div class="phase">
+    <h2>After the match</h2>
+    <label class="f">Alliance final score <span style="font-weight:400">(this robot's alliance, from the field screen; used for OPR)</span><input id="allianceScore" type="number" inputmode="numeric" min="0" placeholder="Leave blank if not posted yet"></label>
+    <div>
+      <div class="sub" style="margin-bottom:6px">Driver skill</div>
+      <div class="seg" id="driver">
+        <label><input type="radio" name="driver" value="1"><span>1</span></label>
+        <label><input type="radio" name="driver" value="2"><span>2</span></label>
+        <label><input type="radio" name="driver" value="3" checked><span>3</span></label>
+        <label><input type="radio" name="driver" value="4"><span>4</span></label>
+        <label><input type="radio" name="driver" value="5"><span>5</span></label>
+      </div>
+    </div>
+    <div class="toggles">
+      <label class="tog"><input type="checkbox" id="disabled"><span>Died / disabled</span></label>
+      <label class="tog"><input type="checkbox" id="tipped"><span>Tipped over</span></label>
+      <label class="tog"><input type="checkbox" id="noShow"><span>No show</span></label>
+    </div>
+    <div class="row">
+      <label class="f">Fouls caused<input id="fouls" type="number" inputmode="numeric" min="0" value="0"></label>
+      <div class="f" style="display:grid;gap:4px"><span class="sub" style="margin:0">Card</span>
+        <div class="seg cards" id="card">
+          <label><input type="radio" name="card" value="none" checked><span>None</span></label>
+          <label><input type="radio" name="card" value="yellow"><span class="y">Yellow</span></label>
+          <label><input type="radio" name="card" value="red"><span class="rd">Red</span></label>
+        </div>
+      </div>
+    </div>
+    <label class="f">Notes<textarea id="notes" placeholder="Shooter range, intake speed, where they score from, anything a pick list should know"></textarea></label>
+  </div>
+
+  <div class="submitbar">
+    <div class="est"><b id="estPts">0</b>est. points</div>
+    <button class="primary" id="submitBtn" type="button">Submit match</button>
+  </div>
+  <div id="formErr" class="notice bad" hidden></div>
+</section>
+
+<!-- MATCHES -->
+<section id="v-matches" class="view" hidden>
+  <div class="toolbar">
+    <input id="mFilter" type="text" placeholder="Filter by team, match or scout">
+    <select id="mEvent" style="max-width:220px"></select>
+    <div class="sp"><button class="ghost" id="exportBtn" type="button">Export CSV</button></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th class="l">Match</th><th class="l">Team</th><th class="l">Stn</th><th>Auto fuel</th><th>Tele fuel</th><th>Miss</th><th class="l">Climb</th><th>Drv</th><th>Pts</th><th>Alliance score</th><th class="l">Flags</th><th class="l">Scout</th><th class="l">Notes</th><th></th></tr></thead>
+    <tbody id="mBody"></tbody>
+  </table></div>
+  <div id="exportOut" hidden><label class="f">CSV (select all and copy)<textarea id="csvText" rows="8" readonly></textarea></label></div>
+</section>
+
+<!-- TEAMS -->
+<section id="v-teams" class="view" hidden>
+  <div class="toolbar">
+    <input id="tFilter" type="text" placeholder="Find a team">
+    <select id="tEvent" style="max-width:220px"></select>
+  </div>
+  <div id="teamDetail" hidden></div>
+  <div class="tablewrap"><table>
+    <thead><tr id="tHead"></tr></thead>
+    <tbody id="tBody"></tbody>
+  </table></div>
+  <p class="foot" id="oprNote"></p>
+  <p class="foot">OPR (offensive power rating) is each team's estimated share of its alliance's official score, fouls and bonuses included. Avg pts is what our scouts saw the robot score. Estimated points use REBUILT values: 1 per fuel in an active hub, 15 for a Level 1 climb in auto, and 10, 20 or 30 for an endgame climb to Level 1, 2 or 3. Climb % counts matches that ended at Level 1 or higher. Click a team for its match history and notes.</p>
+</section>
+
+</main>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const OURS = 11744;
+  const CLIMB_PTS = { none: 0, fail: 0, L1: 10, L2: 20, L3: 30 };
+  const MT_LABEL = { qm: "Q", sf: "P", f: "F", pr: "Pr" };
+
+  const ls = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const newId = () => "e" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+  /* ---------- state ---------- */
+  let db = null, canWrite = null;
+  let remote = new Map();           // id -> entry from db
+  let queue = ls.get("nyx-queue", []); // unsynced entries
+  let counters = { autoFuel: 0, autoMiss: 0, teleFuel: 0, teleMiss: 0 };
+  let formId = newId();
+  let teamSort = { key: "avgPts", dir: -1 };
+  let openTeam = null;
+  let pendingDelete = null;
+
+  /* ---------- toast ---------- */
+  let tt;
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2600); }
+
+  /* ---------- routing ---------- */
+  const VIEWS = ["scout", "matches", "teams"];
+  function route() {
+    const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "scout";
+    VIEWS.forEach(x => { $("#v-" + x).hidden = x !== v; });
+    $$("nav a").forEach(a => { if (a.dataset.v === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    if (v === "matches") renderMatches();
+    if (v === "teams") renderTeams();
+  }
+  addEventListener("hashchange", route);
+
+  /* ---------- form ---------- */
+  const radio = n => (document.querySelector(`input[name="${n}"]:checked`) || {}).value;
+  const setRadio = (n, v) => { const el = document.querySelector(`input[name="${n}"][value="${v}"]`); if (el) el.checked = true; };
+  const chk = id => $("#" + id).checked;
+  const TOGGLES = ["autoMoved", "autoDepot", "autoClimb", "bump", "trench", "feeder", "hpFeed", "disabled", "tipped", "noShow"];
+
+  function points(e) {
+    return (e.autoFuel || 0) + (e.autoClimb ? 15 : 0) + (e.teleFuel || 0) + (CLIMB_PTS[e.climb] || 0);
+  }
+
+  function readForm() {
+    const e = {
+      id: formId,
+      scout: $("#scoutName").value.trim(),
+      event: $("#eventName").value.trim() || "Unnamed event",
+      matchType: $("#matchType").value,
+      match: parseInt($("#matchNo").value, 10) || 0,
+      team: parseInt($("#teamNo").value, 10) || 0,
+      station: radio("station"),
+      ...counters,
+      defense: +radio("defense"),
+      climb: radio("climb"),
+      driver: +radio("driver"),
+      fouls: Math.max(0, parseInt($("#fouls").value, 10) || 0),
+      card: radio("card"),
+      notes: $("#notes").value.trim().slice(0, 1000),
+      allianceScore: $("#allianceScore").value === "" ? null : Math.max(0, parseInt($("#allianceScore").value, 10) || 0),
+    };
+    TOGGLES.forEach(t => e[t] = chk(t));
+    e.pts = points(e);
+    return e;
+  }
+
+  function saveDraft() {
+    const e = readForm();
+    ls.set("nyx-draft", e);
+    ls.set("nyx-prefs", { scout: e.scout, event: $("#eventName").value.trim(), matchType: e.matchType, station: e.station });
+    $("#estPts").textContent = e.pts;
+  }
+
+  function loadDraft() {
+    const p = ls.get("nyx-prefs", {});
+    if (p.scout) $("#scoutName").value = p.scout;
+    if (p.event) $("#eventName").value = p.event;
+    if (p.matchType) $("#matchType").value = p.matchType;
+    if (p.station) setRadio("station", p.station);
+    const d = ls.get("nyx-draft", null);
+    if (d) {
+      if (d.id) formId = d.id;
+      if (d.match) $("#matchNo").value = d.match;
+      if (d.team) $("#teamNo").value = d.team;
+      Object.keys(counters).forEach(k => counters[k] = d[k] || 0);
+      TOGGLES.forEach(t => $("#" + t).checked = !!d[t]);
+      setRadio("defense", d.defense ?? 0); setRadio("climb", d.climb || "none");
+      setRadio("driver", d.driver || 3); setRadio("card", d.card || "none");
+      $("#fouls").value = d.fouls || 0; $("#notes").value = d.notes || "";
+      $("#allianceScore").value = d.allianceScore ?? "";
+    }
+    paintCounters();
+    $("#estPts").textContent = points(readForm());
+  }
+
+  function paintCounters() {
+    $$(".counter").forEach(c => c.querySelector("output").textContent = counters[c.dataset.k]);
+  }
+
+  $$(".counter").forEach(c => c.addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-d]"); if (!b) return;
+    const k = c.dataset.k; counters[k] = Math.max(0, counters[k] + +b.dataset.d);
+    c.querySelector("output").textContent = counters[k];
+    saveDraft();
+  }));
+  $("#v-scout").addEventListener("input", saveDraft);
+  $("#v-scout").addEventListener("change", saveDraft);
+
+  function resetForm(nextMatch) {
+    formId = newId();
+    Object.keys(counters).forEach(k => counters[k] = 0);
+    TOGGLES.forEach(t => $("#" + t).checked = false);
+    setRadio("defense", 0); setRadio("climb", "none"); setRadio("driver", 3); setRadio("card", "none");
+    $("#fouls").value = 0; $("#notes").value = ""; $("#teamNo").value = ""; $("#allianceScore").value = "";
+    $("#matchNo").value = nextMatch;
+    paintCounters(); saveDraft();
+    scrollTo({ top: 0 });
+  }
+
+  $("#submitBtn").addEventListener("click", () => {
+    const e = readForm();
+    const err = [];
+    if (!e.scout) err.push("your name");
+    if (!e.match) err.push("a match number");
+    if (!e.team) err.push("a team number");
+    const box = $("#formErr");
+    if (err.length) { box.textContent = "Add " + err.join(", ") + " before submitting."; box.hidden = false; return; }
+    box.hidden = true;
+    e.createdAt = new Date().toISOString();
+    queue = queue.filter(q => q.id !== e.id).concat(e);
+    ls.set("nyx-queue", queue);
+    toast(`Saved ${MT_LABEL[e.matchType]}${e.match} · ${e.team}`);
+    resetForm(e.match + 1);
+    flush();
+    refreshAll();
+  });
+
+  /* ---------- sync ---------- */
+  let flushing = false;
+  async function flush() {
+    if (!db || flushing || !queue.length || canWrite === false) { paintSync(); return; }
+    flushing = true;
+    try {
+      for (const e of [...queue]) {
+        try {
+          await db.collection("entries").doc(e.id).set(e);
+          queue = queue.filter(q => q.id !== e.id);
+          ls.set("nyx-queue", queue);
+        } catch (err) {
+          if (err && err.code === "invalid_argument" && canWrite == null) { canWrite = false; applyWriteState(); }
+          break;
+        }
+      }
+    } finally { flushing = false; paintSync(); refreshAll(); }
+  }
+  setInterval(() => { if (queue.length) flush(); }, 20000);
+  addEventListener("online", flush);
+
+  function paintSync() {
+    const s = $("#sync"), t = s.querySelector("span");
+    s.className = "sync";
+    if (!db) { t.textContent = `${queue.length} saved on this device`; s.classList.add("wait"); return; }
+    if (queue.length) { t.textContent = `${queue.length} waiting to sync`; s.classList.add("wait"); return; }
+    t.textContent = `${remote.size} entries synced`; s.classList.add("ok");
+  }
+
+  function applyWriteState() {
+    const ro = canWrite === false;
+    $("#roNote").hidden = !ro;
+    $("#submitBtn").disabled = ro;
+  }
+
+  /* ---------- data helpers ---------- */
+  function allEntries() {
+    const m = new Map(remote);
+    queue.forEach(q => m.set(q.id, { ...q, _pending: true }));
+    return [...m.values()];
+  }
+  function fillEvents(sel) {
+    const evs = [...new Set(allEntries().map(e => e.event))].sort();
+    const cur = sel.value;
+    sel.innerHTML = `<option value="">All events</option>` + evs.map(v => `<option>${esc(v)}</option>`).join("");
+    if (evs.includes(cur)) sel.value = cur;
+  }
+  let renderLater = false;
+  function refreshAll() {
+    paintSync();
+    // don't redraw the table under someone typing a score
+    if (document.activeElement?.matches?.("input[data-score]")) { renderLater = true; return; }
+    if (!$("#v-matches").hidden) renderMatches();
+    if (!$("#v-teams").hidden) renderTeams();
+  }
+  const climbPill = c => c === "L1" || c === "L2" || c === "L3" ? `<span class="pill lv">${c}</span>` : c === "fail" ? `<span class="pill w">fail</span>` : `<span class="pill no">—</span>`;
+  const matchKey = e => ({ pr: 0, qm: 1, sf: 2, f: 3 }[e.matchType] ?? 1) * 10000 + (e.match || 0);
+
+  /* ---------- matches ---------- */
+  function renderMatches() {
+    fillEvents($("#mEvent"));
+    const q = $("#mFilter").value.trim().toLowerCase();
+    const ev = $("#mEvent").value;
+    let rows = allEntries().filter(e => (!ev || e.event === ev) &&
+      (!q || String(e.team).includes(q) || (MT_LABEL[e.matchType] + e.match).toLowerCase().includes(q) || (e.scout || "").toLowerCase().includes(q)));
+    rows.sort((a, b) => matchKey(b) - matchKey(a) || (b.createdAt || "").localeCompare(a.createdAt || ""));
+    const body = $("#mBody");
+    if (!rows.length) {
+      body.innerHTML = `<tr><td colspan="14"><div class="empty"><strong>No matches yet</strong><span>${allEntries().length ? "Nothing matches that filter." : "Scout a match on the Scout tab and it shows up here for the whole team."}</span></div></td></tr>`;
+      return;
+    }
+    body.innerHTML = rows.map(e => {
+      const flags = [e.noShow && "no show", e.disabled && "died", e.tipped && "tipped", e.card !== "none" && e.card, e.fouls ? e.fouls + " foul" + (e.fouls > 1 ? "s" : "") : ""].filter(Boolean);
+      const del = pendingDelete === e.id
+        ? `<span class="confirm"><button class="ghost danger" data-del-yes="${esc(e.id)}">Delete</button><button class="ghost" data-del-no>Keep</button></span>`
+        : (e._pending ? `<span class="pend">not synced</span>` : (canWrite === false ? "" : `<button class="ghost" data-del="${esc(e.id)}" aria-label="Delete entry">✕</button>`));
+      return `<tr class="${e.team === OURS ? "ours" : ""}">
+        <td>${MT_LABEL[e.matchType] || ""}${e.match}</td>
+        <td class="l"><span class="teamno">${e.team}</span></td>
+        <td class="l"><span class="pill ${String(e.station).startsWith("R") ? "r" : "b"}">${esc(e.station)}</span></td>
+        <td>${e.autoFuel}${e.autoClimb ? " +L1" : ""}</td><td>${e.teleFuel}</td><td>${(e.autoMiss || 0) + (e.teleMiss || 0)}</td>
+        <td class="l">${climbPill(e.climb)}</td><td>${e.driver}</td><td><b>${e.pts}</b></td>
+        <td><input class="scorein" type="number" inputmode="numeric" min="0" id="sc-${esc(e.id)}" data-score="${esc(e.id)}" value="${e.allianceScore ?? ""}" placeholder="—" aria-label="Alliance score, ${MT_LABEL[e.matchType]}${e.match} team ${e.team}" ${!e._pending && canWrite === false ? "disabled" : ""}></td>
+        <td class="l">${flags.map(f => `<span class="pill w">${esc(f)}</span>`).join(" ")}</td>
+        <td class="l">${esc(e.scout)}</td><td class="txt">${esc(e.notes)}</td><td>${del}</td></tr>`;
+    }).join("");
+  }
+  $("#mFilter").addEventListener("input", renderMatches);
+  $("#mEvent").addEventListener("change", renderMatches);
+  $("#mBody").addEventListener("click", async ev => {
+    const b = ev.target.closest("button"); if (!b) return;
+    if (b.dataset.del) { pendingDelete = b.dataset.del; renderMatches(); return; }
+    if ("delNo" in b.dataset) { pendingDelete = null; renderMatches(); return; }
+    if (b.dataset.delYes) {
+      const id = b.dataset.delYes; pendingDelete = null;
+      try { await db.collection("entries").doc(id).delete(); toast("Entry deleted"); }
+      catch { toast("Couldn't delete. Check your connection and access."); }
+      renderMatches();
+    }
+  });
+
+  $("#mBody").addEventListener("change", async ev => {
+    const inp = ev.target.closest("input[data-score]"); if (!inp) return;
+    const id = inp.dataset.score;
+    const val = inp.value === "" ? null : Math.max(0, parseInt(inp.value, 10) || 0);
+    const q = queue.find(x => x.id === id);
+    if (q) { q.allianceScore = val; ls.set("nyx-queue", queue); toast("Score saved"); flush(); return; }
+    if (!db) return;
+    try { await db.collection("entries").doc(id).update({ allianceScore: val }); toast("Score saved"); }
+    catch { toast("Couldn't save the score. Check your connection and access."); }
+  });
+  $("#mBody").addEventListener("focusout", ev => {
+    if (ev.target.matches?.("input[data-score]") && renderLater) { renderLater = false; setTimeout(refreshAll, 0); }
+  });
+
+  /* ---------- CSV ---------- */
+  const CSV_COLS = ["event", "matchType", "match", "team", "station", "scout", "autoFuel", "autoMiss", "autoMoved", "autoDepot", "autoClimb", "teleFuel", "teleMiss", "bump", "trench", "feeder", "hpFeed", "defense", "climb", "driver", "disabled", "tipped", "noShow", "fouls", "card", "pts", "allianceScore", "notes", "createdAt"];
+  function toCsv(rows) {
+    const cell = v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+    return [CSV_COLS.join(",")].concat(rows.map(r => CSV_COLS.map(c => cell(r[c])).join(","))).join("\n");
+  }
+  $("#exportBtn").addEventListener("click", async () => {
+    const ev = $("#mEvent").value;
+    const rows = allEntries().filter(e => !ev || e.event === ev).sort((a, b) => matchKey(a) - matchKey(b));
+    const csv = toCsv(rows);
+    const name = `nyx-11744-scouting${ev ? "-" + ev.replace(/[^\w-]+/g, "_") : ""}.csv`;
+    let saved = false;
+    try {
+      const dl = await claude.use("downloads");
+      if (dl) { await dl.save({ filename: name, data: csv }); saved = true; toast("CSV saved"); }
+    } catch (err) { if (err && err.code === "declined") { return; } }
+    if (!saved) {
+      $("#exportOut").hidden = false; $("#csvText").value = csv;
+      try { await navigator.clipboard.writeText(csv); toast("CSV copied to clipboard"); } catch { $("#csvText").select(); }
+    }
+  });
+
+  /* ---------- OPR ----------
+     Each alliance result says: team A + team B + team C = alliance score.
+     Least squares over all results gives each team's contribution (OPR).
+     A small ridge term pulls teams with few matches toward the average,
+     so early-event numbers don't explode. */
+  const RIDGE = 0.5;
+  function computeOPR(entries) {
+    const groups = new Map();
+    entries.forEach(e => {
+      if (e.matchType === "pr" || !e.station || !e.team) return;
+      const k = [e.event, e.matchType, e.match, e.station[0]].join("|");
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(e);
+    });
+    const rows = [];
+    let partial = 0;
+    groups.forEach(es => {
+      const teams = [...new Set(es.map(e => e.team))];
+      const scores = es.map(e => e.allianceScore).filter(v => typeof v === "number").sort((a, b) => a - b);
+      if (!scores.length) return;
+      if (teams.length !== 3) { partial++; return; }
+      rows.push({ teams, score: scores[Math.floor(scores.length / 2)] });
+    });
+    const opr = new Map();
+    if (!rows.length) return { opr, used: 0, partial };
+    const ids = [...new Set(rows.flatMap(r => r.teams))];
+    const idx = new Map(ids.map((t, i) => [t, i]));
+    const n = ids.length;
+    const mu = rows.reduce((s, r) => s + r.score, 0) / rows.length / 3;
+    const M = Array.from({ length: n }, () => new Float64Array(n + 1));
+    rows.forEach(r => {
+      const is = r.teams.map(t => idx.get(t)), rhs = r.score - 3 * mu;
+      is.forEach(i => { is.forEach(j => M[i][j] += 1); M[i][n] += rhs; });
+    });
+    for (let i = 0; i < n; i++) M[i][i] += RIDGE;
+    for (let c = 0; c < n; c++) {
+      let p = c;
+      for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+      [M[c], M[p]] = [M[p], M[c]];
+      for (let r = 0; r < n; r++) {
+        if (r === c || !M[r][c]) continue;
+        const f = M[r][c] / M[c][c];
+        for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k];
+      }
+    }
+    ids.forEach((t, i) => opr.set(t, mu + M[i][n] / M[i][i]));
+    return { opr, used: rows.length, partial };
+  }
+
+  /* ---------- teams ---------- */
+  function aggregate(entries) {
+    const by = new Map();
+    entries.filter(e => !e.noShow).forEach(e => { if (!by.has(e.team)) by.set(e.team, []); by.get(e.team).push(e); });
+    return [...by.entries()].map(([team, es]) => {
+      const n = es.length, avg = f => es.reduce((s, e) => s + (f(e) || 0), 0) / n;
+      const lvl = { L1: 1, L2: 2, L3: 3 };
+      const best = Math.max(0, ...es.map(e => lvl[e.climb] || 0));
+      const shots = es.reduce((s, e) => s + e.autoFuel + e.teleFuel, 0), miss = es.reduce((s, e) => s + (e.autoMiss || 0) + (e.teleMiss || 0), 0);
+      return {
+        team, n, es,
+        avgPts: avg(e => e.pts), maxPts: Math.max(...es.map(e => e.pts)),
+        avgAuto: avg(e => e.autoFuel), avgTele: avg(e => e.teleFuel),
+        acc: shots + miss ? shots / (shots + miss) : null,
+        autoClimb: avg(e => e.autoClimb ? 1 : 0),
+        climbRate: avg(e => lvl[e.climb] ? 1 : 0), best,
+        avgClimbPts: avg(e => CLIMB_PTS[e.climb]),
+        driver: avg(e => e.driver), defense: avg(e => e.defense),
+        died: es.filter(e => e.disabled || e.tipped).length,
+      };
+    });
+  }
+  const TCOLS = [
+    ["team", "Team", "l"], ["n", "M"], ["opr", "OPR"], ["avgPts", "Avg pts"], ["maxPts", "Max"], ["avgAuto", "Auto fuel"], ["avgTele", "Tele fuel"],
+    ["acc", "Acc"], ["autoClimb", "Auto L1"], ["climbRate", "Climb"], ["best", "Best", "l"], ["driver", "Drv"], ["defense", "Def"], ["died", "Died"]
+  ];
+  const f1 = v => v == null ? "—" : v.toFixed(1);
+  const pct = v => v == null ? "—" : Math.round(v * 100) + "%";
+  function renderTeams() {
+    fillEvents($("#tEvent"));
+    const ev = $("#tEvent").value, q = $("#tFilter").value.trim();
+    const filtered = allEntries().filter(e => !ev || e.event === ev);
+    const O = computeOPR(filtered);
+    let rows = aggregate(filtered);
+    rows.forEach(r => r.opr = O.opr.has(r.team) ? O.opr.get(r.team) : null);
+    const all = rows;
+    $("#oprNote").textContent = O.used
+      ? `OPR is solved from ${O.used} alliance score${O.used > 1 ? "s" : ""}${O.partial ? `; ${O.partial} more had a score but not all three robots scouted` : ""}. It gets reliable after each team has played about 6 matches.`
+      : `OPR appears once scouts enter alliance final scores and all three robots on an alliance are scouted for the same match.${O.partial ? ` ${O.partial} alliance${O.partial > 1 ? "s have" : " has"} a score but is missing a robot.` : ""}`;
+    if (q) rows = rows.filter(r => String(r.team).includes(q));
+    const { key, dir } = teamSort;
+    rows.sort((a, b) => ((a[key] ?? -1) - (b[key] ?? -1)) * dir || a.team - b.team);
+    $("#tHead").innerHTML = TCOLS.map(([k, l, c]) => `<th class="${c || ""}"><button data-sort="${k}" ${k === key ? `aria-sort="${dir < 0 ? "descending" : "ascending"}"` : ""}>${l}${k === key ? (dir < 0 ? " ↓" : " ↑") : ""}</button></th>`).join("");
+    const body = $("#tBody");
+    if (!rows.length) {
+      body.innerHTML = `<tr><td colspan="${TCOLS.length}"><div class="empty"><strong>No teams yet</strong><span>${all.length ? "No team matches that number." : "Team averages build up here as scouts submit matches."}</span></div></td></tr>`;
+    } else {
+      body.innerHTML = rows.map(r => `<tr class="click ${r.team === OURS ? "ours" : ""}" data-team="${r.team}" tabindex="0">
+        <td><span class="teamno">${r.team}</span></td><td>${r.n}</td><td><b>${f1(r.opr)}</b></td><td>${f1(r.avgPts)}</td><td>${r.maxPts}</td>
+        <td>${f1(r.avgAuto)}</td><td>${f1(r.avgTele)}</td><td>${pct(r.acc)}</td><td>${pct(r.autoClimb)}</td><td>${pct(r.climbRate)}</td>
+        <td class="l">${r.best ? `<span class="pill lv">L${r.best}</span>` : `<span class="pill no">—</span>`}</td>
+        <td>${f1(r.driver)}</td><td>${f1(r.defense)}</td><td>${r.died || ""}</td></tr>`).join("");
+    }
+    renderDetail(all.find(r => r.team === openTeam));
+  }
+  function renderDetail(r) {
+    const box = $("#teamDetail");
+    if (!r) { box.hidden = true; box.innerHTML = ""; return; }
+    const es = [...r.es].sort((a, b) => matchKey(a) - matchKey(b));
+    const W = Math.max(320, es.length * 44 + 60), H = 180, pad = { l: 36, r: 12, t: 14, b: 28 };
+    const max = Math.max(10, ...es.map(e => e.pts)), step = max > 80 ? 20 : max > 40 ? 10 : 5, top = Math.ceil(max / step) * step;
+    const y = v => pad.t + (H - pad.t - pad.b) * (1 - v / top);
+    const bw = Math.min(28, (W - pad.l - pad.r) / es.length - 8);
+    const x = i => pad.l + (i + .5) * (W - pad.l - pad.r) / es.length;
+    let grid = "";
+    for (let v = 0; v <= top; v += step) grid += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${pad.l - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${v}</text>`;
+    const bars = es.map((e, i) => {
+      const fuel = e.autoFuel + e.teleFuel, climb = e.pts - fuel;
+      return `<rect x="${x(i) - bw / 2}" y="${y(fuel)}" width="${bw}" height="${y(0) - y(fuel)}" fill="var(--fuel)" rx="2"/>` +
+        (climb ? `<rect x="${x(i) - bw / 2}" y="${y(e.pts)}" width="${bw}" height="${y(fuel) - y(e.pts)}" fill="var(--moon)" rx="2"/>` : "") +
+        `<text x="${x(i)}" y="${H - 9}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${MT_LABEL[e.matchType]}${e.match}</text>`;
+    }).join("");
+    const notes = es.filter(e => e.notes).reverse();
+    box.className = "detail"; box.hidden = false;
+    box.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap">
+        <h3>${r.team}${r.team === OURS ? " <small>that's us</small>" : ""}<small>${r.n} match${r.n > 1 ? "es" : ""} scouted</small></h3>
+        <button class="ghost" data-close type="button">Close</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><div>OPR</div><b>${f1(r.opr)}</b></div>
+        <div class="stat"><div>Avg points</div><b>${f1(r.avgPts)}</b></div>
+        <div class="stat"><div>Avg fuel</div><b>${f1(r.avgAuto + r.avgTele)}</b></div>
+        <div class="stat"><div>Accuracy</div><b>${pct(r.acc)}</b></div>
+        <div class="stat"><div>Climb rate</div><b>${pct(r.climbRate)}</b></div>
+        <div class="stat"><div>Best climb</div><b>${r.best ? "L" + r.best : "—"}</b></div>
+      </div>
+      <div class="chart"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Estimated points per match: fuel in yellow, climb in violet">${grid}${bars}</svg></div>
+      <div style="display:flex;gap:14px;font-size:13px;color:var(--muted)"><span><i style="display:inline-block;width:10px;height:10px;background:var(--fuel);border-radius:2px"></i> Fuel</span><span><i style="display:inline-block;width:10px;height:10px;background:var(--moon);border-radius:2px"></i> Climb</span></div>
+      ${notes.length ? `<ul class="notes">${notes.map(e => `<li><span>${MT_LABEL[e.matchType]}${e.match} · ${esc(e.scout)}</span>${esc(e.notes)}</li>`).join("")}</ul>` : `<p class="foot" style="margin:0">No notes for this team yet.</p>`}`;
+  }
+  $("#tFilter").addEventListener("input", renderTeams);
+  $("#tEvent").addEventListener("change", renderTeams);
+  $("#tHead").addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-sort]"); if (!b) return;
+    const k = b.dataset.sort;
+    teamSort = teamSort.key === k ? { key: k, dir: -teamSort.dir } : { key: k, dir: k === "team" ? 1 : -1 };
+    renderTeams();
+  });
+  function openRow(tr) { openTeam = +tr.dataset.team; renderTeams(); $("#teamDetail").scrollIntoView({ behavior: "smooth", block: "start" }); }
+  $("#tBody").addEventListener("click", ev => { const tr = ev.target.closest("tr[data-team]"); if (tr) openRow(tr); });
+  $("#tBody").addEventListener("keydown", ev => { if (ev.key === "Enter") { const tr = ev.target.closest("tr[data-team]"); if (tr) openRow(tr); } });
+  $("#teamDetail").addEventListener("click", ev => { if (ev.target.closest("[data-close]")) { openTeam = null; renderTeams(); } });
+
+  /* ---------- boot ---------- */
+  loadDraft();
+  route();
+  paintSync();
+
+  (async () => {
+    try {
+      const u = await window.claude?.use?.("user");
+      if (u) { canWrite = await u.can("data.write"); applyWriteState(); }
+    } catch {}
+    try { db = await window.claude?.use?.("db"); } catch { db = null; }
+    if (!db) { paintSync(); return; }
+    db.collection("entries").orderBy("createdAt", "desc").limit(1000).onSnapshot(snap => {
+      remote = new Map(snap.docs.map(d => [d.id, d.data()]));
+      // drop any queued entry the server already has
+      const before = queue.length;
+      queue = queue.filter(q => !remote.has(q.id));
+      if (queue.length !== before) ls.set("nyx-queue", queue);
+      refreshAll();
+    }, () => { db = null; paintSync(); });
+    flush();
+  })();
+})();
+</script>
+
+</body>
+</html>
+
+</body></html>
